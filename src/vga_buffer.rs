@@ -142,3 +142,30 @@ pub fn _print(args: fmt::Arguments) {
     use core::fmt::Write;
     WRITER.lock().write_fmt(args).unwrap();
 }
+
+#[test_case]
+fn trivial_assertion() {
+    assert_eq!(1, 1);
+}
+
+#[test_case]
+fn a_single_prntln_test() {
+    println!("a_single_println output");
+}
+
+#[test_case]
+fn many_printed_lines() {
+    for _ in 0..200 {
+        println!("wow this is a lot of printed lines!");
+    }
+}
+
+#[test_case]
+fn can_you_see_the_lines() {
+    let s = "A single line string";
+    println!("{}", s);
+    for (i, c) in s.chars().enumerate() {
+        let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
+        assert_eq!(char::from(screen_char.cp437_character), c);
+    }
+}
