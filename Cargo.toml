@@ -35,6 +35,7 @@ features = ["spin_no_std"]
 
 [[bin]]
 name = "blog_os"
-# test = false
-# doctest = false
-# bench = false
+
+[[test]]
+name = "should_panic"
+harness = false

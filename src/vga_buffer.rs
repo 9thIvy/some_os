@@ -144,11 +144,6 @@ pub fn _print(args: fmt::Arguments) {
 }
 
 #[test_case]
-fn trivial_assertion() {
-    assert_eq!(1, 1);
-}
-
-#[test_case]
 fn a_single_prntln_test() {
     println!("a_single_println output");
 }
@@ -160,6 +155,7 @@ fn many_printed_lines() {
     }
 }
 
+//this test must be run after something else prints to the vga buffer
 #[test_case]
 fn can_you_see_the_lines() {
     let s = "A single line string";
