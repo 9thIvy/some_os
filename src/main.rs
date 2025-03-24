@@ -1,3 +1,6 @@
+//Comments and code are all from phil-opp's blog_os
+//At some point I will add backspace support and a shell
+
 #![no_std]
 #![no_main]
 #![feature(custom_test_frameworks)]
@@ -12,18 +15,18 @@ mod vga_buffer;
 entry_point!(kernel_main);
 
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
-    use blog_os::memory::active_level_4_table;
+    use blog_os::memory;
+    use blog_os::memory::BootInfoFrameAllocater;
     use x86_64::VirtAddr;
     blog_os::init();
     println!("blog_os::init...[Ok]");
 
     let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
-    let l4_table = unsafe { active_level_4_table(phys_mem_offset) };
-    for (i, entry) in l4_table.iter().enumerate() {
-        if !entry.is_unused() {
-            println!("blog_os::l4_table[{}] free...[Ok]", i);
-        }
-    }
+    //Will be used later
+    #[allow(unused)]
+    let mut mapper = unsafe { memory::init(phys_mem_offset) };
+    #[allow(unused)]
+    let mut frame_allocator = unsafe { BootInfoFrameAllocater::init(&boot_info.memory_map) };
 
     #[cfg(test)]
     test_main();
